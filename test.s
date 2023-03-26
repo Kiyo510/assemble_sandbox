@@ -15,4 +15,6 @@ main:
     int $0x80
 
 .data
-msg: .asciz "Hello,world!\n"
+msg:
+    .asciz "Hello,world!\n"
+
