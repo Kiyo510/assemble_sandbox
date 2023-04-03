@@ -1,20 +1,25 @@
+.data
+msg: .string "eax = ebx\n"
+msgend: .equ len, msgend - msg
+
+.text
 .globl _start
 _start:
     jmp main
 
-.globl main
 main:
-    movl $4, %eax
-    movl $1, %ebx
-    movl $msg, %ecx
-    movl $13, %edx
-    int $0x80
-
-    movl $1, %eax
-    movl $0, %ebx
-    int $0x80
-
-.data
-msg:
-    .asciz "Hello,world!\n"
-
+    movl $100, %eax
+    movl $100, %ebx
+    cmpl %eax, %ebx
+    je print
+end:
+    movl $1, %eax       # exitシステムコール
+    xorl %ebx, %ebx    # 正常終了コード
+    int $0x80               # プログラム終了
+print:
+    movl $4, %eax        # writeシステムコール
+    movl $1, %ebx        # 標準出力へ
+    movl $msg, %ecx    # "eax = ebx\n"
+    movl $len, %edx     # 文字列長
+    int $0x80               # 文字列出力
+    jmp end
